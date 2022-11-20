@@ -1,0 +1,23 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  # Autowiring
+  Ang3\Bundle\AwsS3Bundle\:
+    resource: '../../*'
+    exclude: '../../{DependencyInjection,Resources}'
+
+  # S3 client
+  Aws\S3\S3Client:
+    arguments:
+      -
+        version: '%env(resolve:AWS_S3_VERSION)%'
+        region: '%env(resolve:AWS_S3_REGION)%'
+        credentials:
+          key: '%env(resolve:AWS_S3_KEY)%'
+          secret: '%env(resolve:AWS_S3_SECRET)%'
+  Aws\S3\S3ClientInterface: '@Aws\S3\S3Client'
+  ang3.aws_s3.client:
+    alias: Aws\S3\S3Client
+    public: true
