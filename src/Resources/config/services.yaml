@@ -21,3 +21,9 @@ services:
   ang3.aws_s3.client:
     alias: Aws\S3\S3Client
     public: true
+
+  # S3 config
+  Ang3\Bundle\AwsS3Bundle\Service\DefaultAwsS3Config:
+    arguments:
+      $bucketName: '%env(resolve:AWS_S3_DEFAULT_BUCKET)%'
+      $bucketPrefix: '%env(resolve:AWS_S3_DEFAULT_PREFIX)%'

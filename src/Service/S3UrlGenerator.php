@@ -11,7 +11,7 @@ class S3UrlGenerator
 {
     public const DEFAULT_TTL = '24 hours';
 
-    public function __construct(private S3ClientInterface $s3Client)
+    public function __construct(private S3ClientInterface $s3Client, private DefaultAwsS3Config $defaultAwsS3Config)
     {
     }
 
@@ -28,8 +28,19 @@ class S3UrlGenerator
      * @param DateTime|int|string|null $expires this can be a Unix timestamp, a PHP DateTime object,
      *                                          or a string that can be evaluated by strtotime()
      */
-    public function generate(string $bucket, string $key, DateTime|int|string $expires = null, array $options = []): string
+    public function generate(string $key, string $bucket = null, DateTime|int|string $expires = null, array $options = []): string
     {
+        if (null === $bucket) {
+            $defaultBucketName = $this->defaultAwsS3Config->getBucketName();
+
+            if (!$defaultBucketName) {
+                throw new \InvalidArgumentException('Missing parameter #2 ($bucketName) - If you wan to use a default bucket and prefix, please set env vars "AWS_S3_DEFAULT_BUCKET" and optionally "AWS_S3_DEFAULT_PREFIX".');
+            }
+
+            $bucket = $defaultBucketName;
+            $key = $this->defaultAwsS3Config->generatePath($key);
+        }
+
         $this->assertFileExists($bucket, $key);
         $cmd = $this->s3Client->getCommand('GetObject', [
             'Bucket' => $bucket,

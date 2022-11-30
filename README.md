@@ -41,10 +41,23 @@ AWS_S3_KEY="YOUR_KEY"
 AWS_S3_SECRET="YOUR_SECRET"
 AWS_S3_REGION="YOUR_REGION"
 AWS_S3_VERSION="2006-03-01"
+AWS_S3_DEFAULT_BUCKET="YOUR_BUCKET"
+AWS_S3_DEFAULT_PREFIX=
 ###< ang3/aws-s3-bundle ###
 ```
 
 Make sure to replace `YOUR_KEY`, `YOUR_SECRET`, `YOUR_REGION` by your AWS settings.
+
+Optionally, you can set a default bucket and prefix. These values are populated into the service 
+`Ang3\Bundle\AwsS3Bundle\Service\AwsS3Config` used in case of generating URL without named bucket.
+
+```dotenv
+###> ang3/aws-s3-bundle ###
+# ...
+AWS_S3_DEFAULT_BUCKET="YOUR_BUCKET"
+AWS_S3_DEFAULT_PREFIX=""
+###< ang3/aws-s3-bundle ###
+```
 
 Usage
 =====
@@ -93,8 +106,10 @@ class MyService
 Then, create your URL for a ```bucket``` and ```key```:
 
 ```php
-$publicUrl = $this->urlGenerator->generate('my_bucket', 'my_key', '2 weeks');
+$publicUrl = $this->urlGenerator->generate('my_key', 'my_bucket', '2 weeks');
 ```
+
+If `my_bucket` is `NULL`, then the default bucket and prefix from configuration is used.
 
 Also, you can generate a URL directly from an instance of 
 ```Ang3\Bundle\AwsS3Bundle\Dto\FileLocation```:
