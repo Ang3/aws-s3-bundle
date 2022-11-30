@@ -41,23 +41,16 @@ AWS_S3_KEY="YOUR_KEY"
 AWS_S3_SECRET="YOUR_SECRET"
 AWS_S3_REGION="YOUR_REGION"
 AWS_S3_VERSION="2006-03-01"
-AWS_S3_DEFAULT_BUCKET="YOUR_BUCKET"
-AWS_S3_DEFAULT_PREFIX=
-###< ang3/aws-s3-bundle ###
-```
-
-Make sure to replace `YOUR_KEY`, `YOUR_SECRET`, `YOUR_REGION` by your AWS settings.
-
-Optionally, you can set a default bucket and prefix. These values are populated into the service 
-`Ang3\Bundle\AwsS3Bundle\Service\AwsS3Config` used in case of generating URL without named bucket.
-
-```dotenv
-###> ang3/aws-s3-bundle ###
-# ...
-AWS_S3_DEFAULT_BUCKET="YOUR_BUCKET"
+# REQUIRED BUT NULLABLE:
+AWS_S3_DEFAULT_BUCKET="DEFAULT_BUCKET"
 AWS_S3_DEFAULT_PREFIX=""
 ###< ang3/aws-s3-bundle ###
 ```
+
+Make sure to replace `YOUR_KEY`, `YOUR_SECRET` and `YOUR_REGION` by your AWS settings.
+
+Values `AWS_S3_DEFAULT_BUCKET` and `AWS_S3_DEFAULT_PREFIX` are populated into the service 
+`Ang3\Bundle\AwsS3Bundle\Service\AwsS3Config` used in case of generating URL without named bucket.
 
 Usage
 =====
